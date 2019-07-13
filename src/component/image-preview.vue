@@ -130,6 +130,7 @@ export default {
     },
     hide() {
       this.isShow = false;
+      this.rotate = 0;
       this.removeWheel();
     },
 
@@ -163,6 +164,8 @@ export default {
       }
 
       const bs = orgWidth / orgHeight;
+      const bsW = orgWidth / this.calWidth;
+      const bsH = orgHeight / this.calHeight;
 
       // 计算图片宽高
       // 小于计算范围的直接显示原图，否则根据宽高比判断是否是长图
@@ -170,7 +173,7 @@ export default {
       // 不是则按计算范围铺满
       if (orgHeight <= this.calHeight && orgWidth <= this.calWidth) {
         this.height = orgHeight;
-      } else if (bs <= 0.25 || bs >= 4) {
+      } else if ((bs < 0.25 && bsH > 3) || (bs > 4 && bsW > 2)) {
         this.height = orgHeight / 5;
       } else {
         if (orgWidth > this.calWidth) {
