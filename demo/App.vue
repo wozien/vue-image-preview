@@ -1,6 +1,6 @@
 <template>
   <div id="#app">
-    <v-image-preview ref="preview" :images="images" :start-index="index" :can-wheel="canWheel"></v-image-preview>
+    <v-image-preview ref="preview" :images="images" :start-index="index" :can-wheel="canWheel" :can-download="true"></v-image-preview>
     <button @click="show">click不可鼠标滑动</button>
     <button @click="show2">click可以鼠标滑动</button>
   </div>

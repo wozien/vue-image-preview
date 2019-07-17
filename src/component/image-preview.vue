@@ -79,11 +79,16 @@ export default {
   },
 
   mounted() {
-    this.clientHeight = window.innerHeight;
-    this.clientWidth = window.innerWidth;
-    // 200 为按钮的预留高度
-    this.calHeight = (this.clientHeight - 100) * 0.8;
-    this.calWidth = this.clientWidth * 0.8;
+    this.getCalLength();
+
+    // 窗口缩放事件
+    window.addEventListener(
+      'resize',
+      this._throttle(() => {
+        this.getCalLength();
+        this.layout();
+      }, 200)
+    );
   },
 
   methods: {
@@ -145,6 +150,14 @@ export default {
           this.layout();
         }
       };
+    },
+
+    getCalLength() {
+      this.clientHeight = window.innerHeight;
+      this.clientWidth = window.innerWidth;
+      // 200 为按钮的预留高度
+      this.calHeight = (this.clientHeight - 100) * 0.8;
+      this.calWidth = this.clientWidth * 0.8;
     },
 
     getOrgLength() {
@@ -254,6 +267,19 @@ export default {
         this.$refs.img.removeEventListener('DOMMouseScroll', this.wheelHandle);
       }
     },
+    // 函数防抖
+    _debounce(fn, delay) {
+      let timer;
+      return function(...arg) {
+        if (timer) {
+          clearTimeout(timer);
+        }
+        timer = setTimeout(() => {
+          fn.apply(this, arg);
+        }, delay);
+      };
+    },
+
     // 函数节流
     _throttle(fn, delay) {
       let pre = Date.now();
