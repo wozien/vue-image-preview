@@ -169,8 +169,8 @@ export default {
     },
 
     layout() {
-      const orgWidth = this.orgWidth[this.index];
-      const orgHeight = this.orgHeight[this.index];
+      const orgWidth = this.orgWidth.length && this.orgWidth[this.index];
+      const orgHeight = this.orgHeight.length && this.orgHeight[this.index];
 
       if (!orgWidth || !orgHeight) {
         return;
