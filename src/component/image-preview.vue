@@ -89,6 +89,11 @@ export default {
         this.layout();
       }, 200)
     );
+
+    // 绑定滑动缩放事件
+    if (this.canWheel) {
+      this.addWheel();
+    }
   },
 
   methods: {
@@ -242,7 +247,7 @@ export default {
       let bsX = offsetX / width;
       let bsY = offsetY / height;
 
-      if (delta > 0) {
+      if (delta < 0) {
         height += 50;
       } else {
         height -= 50;
@@ -294,8 +299,9 @@ export default {
   },
 
   watch: {
-    images() {
-      this.getOrgLength();
+    images: {
+      immediate: true,
+      handler: 'getOrgLength'
     },
     canWheel(val, oldVal) {
       if (val == oldVal) return;
