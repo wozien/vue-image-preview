@@ -1,7 +1,7 @@
 <template>
   <div id="#app">
-    <v-image-preview ref="preview" :images="images" :start-index="index" :can-wheel="canWheel" :can-download="true"></v-image-preview>
-    <button @click="show">click不可鼠标滑动</button>
+    <v-image-preview ref="preview" :images="images" :start-index="index" :can-wheel="canWheel" :is-show.sync="isShow"></v-image-preview>
+    <button @click="show">click不可以鼠标滑动</button>
     <button @click="show2">click可以鼠标滑动</button>
   </div>
 </template>
@@ -16,7 +16,8 @@ export default {
     return {
       images: [],
       index: 0,
-      canWheel: false
+      canWheel: false,
+      isShow: false
     };
   },
 
@@ -26,6 +27,7 @@ export default {
       this.index = 0;
       this.canWheel = false;
       this.$refs.preview.show();
+      // this.isShow = true;
     },
     show2() {
       this.images = [
@@ -36,7 +38,7 @@ export default {
       ];
       this.index = 0;
       this.canWheel = true;
-      this.$refs.preview.show();
+      this.isShow = true;
     }
   },
 

@@ -27,6 +27,10 @@ export default {
   name: 'VImagePreview',
 
   props: {
+    isShow: {
+      type: Boolean,
+      default: false
+    },
     // 图片数据
     images: {
       type: Array,
@@ -58,7 +62,6 @@ export default {
       top: 0,
       left: 0,
       moving: false,
-      isShow: false,
       index: 0,
       rotate: 0
     };
@@ -133,15 +136,15 @@ export default {
     },
     show() {
       this.index = this.startIndex;
-      this.isShow = true;
       if (this.canWheel) {
         this.addWheel();
       }
+      this.$emit('update:isShow', true);
     },
     hide() {
-      this.isShow = false;
       this.rotate = 0;
       this.removeWheel();
+      this.$emit('update:isShow', false);
     },
 
     loadImage(src, index) {
@@ -309,6 +312,16 @@ export default {
         this.addWheel();
       } else {
         this.removeWheel();
+      }
+    },
+    isShow: {
+      immediate: true,
+      handler(val) {
+        if (val) {
+          this.show();
+        } else {
+          this.hide();
+        }
       }
     }
   }
