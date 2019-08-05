@@ -1,6 +1,6 @@
 {
   "name": "@wozien/vue-image-preview",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "image preview component base on vue.js",
   "main": "index.js",
   "scripts": {

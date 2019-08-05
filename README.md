@@ -15,6 +15,7 @@ npm install @wozien/vue-image-preview
   <div id="#app">
     <v-image-preview
       ref="preview"
+      :is-show.sync="isShow"
       :images="images"
       :start-index="index"
       :can-wheel="canWheel"
@@ -30,6 +31,7 @@ npm install @wozien/vue-image-preview
 
     data() {
       return {
+        isShow: false,
         images: ['.../a.jpg', '.../b.jpg'],
         index: 0,
         canWheel: false
@@ -38,7 +40,8 @@ npm install @wozien/vue-image-preview
 
     methods: {
       show() {
-        this.$refs.preview.show();
+        // this.$refs.preview.show();
+        this.isShow = true;
       }
     }
   };
@@ -50,6 +53,9 @@ npm install @wozien/vue-image-preview
 ### 属性
 
 <dl>
+  <dt>isShow: Boolean</dt>
+  <dd>是否显示图片预览</dd>
+
   <dt>images: Array&lt;string&gt; </dt>
   <dd>图片url数组</dd>
 
