@@ -1,9 +1,16 @@
 <template>
-  <div class="image-preview-bg" ref="bg" @mousemove.stop="handleMousemove" v-show="isShow" @click="handleBgClick($event)">
+  <div class="image-preview-bg" ref="bg" v-show="isShow" @click="handleBgClick($event)">
     <div class="image-wrapper">
-      <div class="image" :style="imgStyle" @mousedown.prevent="handleMousedown" @mouseup="handleMouseup" ref="img">
-        <img :src="images[index]" :class="rotateCls" />
-        <div class="close" @click.stop="hide" @mousedown.stop>
+      <div class="image" :style="layoutStyle">
+        <img
+          ref="img"
+          :src="images[index]"
+          :class="[this.rotate ? `rotate${this.rotate}` : '', { move: canWheel }]"
+          @mousedown.prevent="handleMousedown"
+          @mouseup="handleMouseup"
+          @mousemove.stop="handleMousemove"
+        />
+        <div class="close" @click.stop="hide">
           <i class="iconfont icon-close"></i>
         </div>
       </div>
@@ -68,16 +75,13 @@ export default {
   },
 
   computed: {
-    imgStyle() {
+    layoutStyle() {
       return {
         width: Math.round(this.width) + 'px',
         height: Math.round(this.height) + 'px',
         top: Math.round(this.top) + 'px',
         left: Math.round(this.left) + 'px'
       };
-    },
-    rotateCls() {
-      return this.rotate ? `rotate${this.rotate}` : '';
     }
   },
 
@@ -245,15 +249,15 @@ export default {
       const bs = width / height;
 
       // 计算缩放点的占比
-      let offsetX = e.offsetX || e.pageX - img.style.left;
-      let offsetY = e.offsetY || e.pageY - img.style.top;
+      let offsetX = e.pageX - this.left;
+      let offsetY = e.pageY - this.top;
       let bsX = offsetX / width;
       let bsY = offsetY / height;
 
       if (delta < 0) {
-        height += 50;
+        height += 100;
       } else {
-        height -= 50;
+        height -= 100;
         if (height < 50) {
           height = 50;
         }
@@ -265,7 +269,8 @@ export default {
       this.top = e.pageY - this.height * bsY;
     },
     addWheel() {
-      this.wheelHandle = this._throttle(this.handleMousewheel, 40);
+      if (this.wheelHandle) return;
+      this.wheelHandle = this.handleMousewheel;
       this.$refs.img.addEventListener('mousewheel', this.wheelHandle);
       this.$refs.img.addEventListener('DOMMouseScroll', this.wheelHandle);
     },
@@ -273,6 +278,7 @@ export default {
       if (this.wheelHandle) {
         this.$refs.img.removeEventListener('mousewheel', this.wheelHandle);
         this.$refs.img.removeEventListener('DOMMouseScroll', this.wheelHandle);
+        this.wheelHandle = null;
       }
     },
     // 函数防抖
@@ -344,7 +350,6 @@ export default {
       position: absolute;
       min-width: 50px;
       min-height: 50px;
-      cursor: move;
       > img {
         width: 100%;
         height: 100%;
@@ -356,6 +361,9 @@ export default {
         }
         &.rotate3 {
           transform: rotate(270deg);
+        }
+        &.move {
+          cursor: move;
         }
       }
       .close {
