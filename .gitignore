@@ -1,6 +1,5 @@
 node_modules/
 /dist/
-/demo-dist/
 
 # Editor directories and files
 .idea
